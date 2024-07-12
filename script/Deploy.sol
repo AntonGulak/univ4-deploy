@@ -58,12 +58,12 @@ contract Deploy is Script, Deployers {
                 | Hooks.BEFORE_DONATE_FLAG
         );
 
+        vm.startBroadcast();
         CounterFactory counterFactory = new CounterFactory();
 
         (address predictedAddr, bytes32 salt) =
             HookMiner.find(address(counterFactory), hookFlags, type(Counter).creationCode, abi.encode(poolManagerAddr));
             
-        vm.startBroadcast();
         Counter counter = Counter(counterFactory.deployCounter(poolManagerAddr, salt));
         vm.stopBroadcast();
 
